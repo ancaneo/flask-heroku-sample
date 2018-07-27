@@ -13,22 +13,24 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(100))
-  email = db.Column(db.String(100))
+  sensor = db.Column(db.String(40));
+  record_datetime = db.Column(db.DateTime);
+  value = db.Column(db.Float);
 
-  def __init__(self, name, email):
-    self.name = name
-    self.email = email
+  def __init__(self, sensor, record_datetime, value):
+    self.sensor = sensor;
+    self.record_datetime = record_datetime;
+    self.value = value;
 
 
-@app.route('/', methods=['GET'])
+@app.route('/sensors_values', methods=['GET'])
 def index():
-  return render_template('index.html', users=User.query.all())
+  return "HOLA"; #render_template('index.html', users=User.query.all())
 
 
-@app.route('/user', methods=['POST'])
+@app.route('/sensors_values', methods=['POST'])
 def user():
-  u = User(request.form['name'], request.form['email'])
+  u = User(request.form['sensor'], request.form['record_datetime'],request.form['value'])
   db.session.add(u)
   db.session.commit()
   return redirect(url_for('index'))
